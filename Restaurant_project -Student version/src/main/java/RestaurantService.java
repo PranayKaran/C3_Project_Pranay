@@ -34,6 +34,15 @@ public class RestaurantService {
 
     public int orderTotal(List<String> itemNames, List<Item> restaurantMenu) throws itemNotFoundException{
         int totalPrice = 0;
+        for (String itemName: itemNames) {
+
+            Item value = restaurantMenu.stream().filter(item ->
+                    item.getName().equals(itemName)).findFirst().orElse(null);
+            if (value == null){
+                throw new itemNotFoundException(itemName);
+            }
+            totalPrice = totalPrice +value.getPrice();
+        }
         return totalPrice;
     }
 }

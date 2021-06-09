@@ -14,7 +14,7 @@ class RestaurantServiceTest {
     Restaurant restaurant;
     List<Item> restaurantMenu = new ArrayList<Item>();
 
-    @Before
+    @BeforeEach
     public void setup(){
         Item item1 = new Item("Biryani", 100);
         Item item2 = new Item("Kofta", 100);
