@@ -31,4 +31,9 @@ public class RestaurantService {
     public List<Restaurant> getRestaurants() {
         return restaurants;
     }
+
+    public int orderTotal(List<String> itemNames, List<Item> restaurantMenu) throws itemNotFoundException{
+        int totalPrice = 0;
+        return totalPrice;
+    }
 }

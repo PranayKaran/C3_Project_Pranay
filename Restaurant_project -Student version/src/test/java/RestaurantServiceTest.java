@@ -1,6 +1,9 @@
+import org.junit.Before;
 import org.junit.jupiter.api.*;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -9,10 +12,21 @@ class RestaurantServiceTest {
 
     RestaurantService service = new RestaurantService();
     Restaurant restaurant;
-    //REFACTOR ALL THE REPEATED LINES OF CODE
+    List<Item> restaurantMenu = new ArrayList<Item>();
 
+    @Before
+    public void setup(){
+        Item item1 = new Item("Biryani", 100);
+        Item item2 = new Item("Kofta", 100);
+        Item item3 = new Item("Tikka", 100);
+        Item item4 = new Item("Halwa", 100);
+        restaurantMenu.add(item1);
+        restaurantMenu.add(item2);
+        restaurantMenu.add(item3);
+        restaurantMenu.add(item4);
 
-    //>>>>>>>>>>>>>>>>>>>>>>SEARCHING<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    }
+
     @Test
     public void searching_for_existing_restaurant_should_return_expected_restaurant_object() throws restaurantNotFoundException {
         LocalTime openingTime = LocalTime.parse("10:30:00");
@@ -76,4 +90,25 @@ class RestaurantServiceTest {
         assertEquals(initialNumberOfRestaurants + 1,service.getRestaurants().size());
     }
     //<<<<<<<<<<<<<<<<<<<<ADMIN: ADDING & REMOVING RESTAURANTS>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    @Test
+    public void selected_items_present_in_the_menu_recived_order_total() throws itemNotFoundException {
+        List<String> itemNames = new ArrayList<>();
+        itemNames.add("Biryani");
+        itemNames.add("Halwa");
+        itemNames.add("Tikka");
+        assertEquals(300,service.orderTotal(itemNames,restaurantMenu));
+
+    }
+
+    @Test
+    public void selected_items_not_present_in_the_menu_should_throw_exception() throws itemNotFoundException {
+        List<String> itemNames = new ArrayList<>();
+        itemNames.add("Biryani");
+        itemNames.add("Halwa");
+        itemNames.add("Puri");
+        itemNotFoundException exception = assertThrows(itemNotFoundException.class, ()-> {service.orderTotal(itemNames,restaurantMenu);});
+
+        assertEquals("Puri",exception.getMessage());
+    }
 }
